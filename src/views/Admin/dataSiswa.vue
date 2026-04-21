@@ -10,7 +10,7 @@ createApp({
         nis: '',
         kelas: '',
         tempat_pkl: '',
-        status: '',
+        // status: '',
       },
       isEdit: false,
     }
