@@ -12,13 +12,13 @@
           </div>
         </router-link>
         <router-link to="/aksespengguna">
-          <div class="sm-menu-item active">
+          <div class="sm-menu-item">
             <i class="fa-solid fa-lock"></i>
             <span>Akses Pengguna</span>
           </div>
         </router-link>
         <router-link to="/datasiswa">
-          <div class="sm-menu-item">
+          <div class="sm-menu-item active">
             <i class="fa-solid fa-users"></i>
             <span>Data Siswa</span>
           </div>
