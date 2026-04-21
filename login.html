@@ -1,1 +1,134 @@
-hhjj
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIGMA - Sistem Informasi Guru, Murid, dan Administrasi</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* HEADER */
+      header {
+        background: white;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: #4facfe;
+      }
+
+      nav a {
+        margin-left: 20px;
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        transition: 0.3s;
+      }
+
+      nav a:hover {
+        color: #4facfe;
+      }
+
+      /* MAIN BODY */
+      main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 110px;
+      }
+
+      .container {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        width: 100%;
+      }
+
+      .subtitle {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 20px;
+      }
+
+      .description {
+        font-size: 14px;
+        color: #444;
+        margin-bottom: 30px;
+        line-height: 1.6;
+      }
+
+      .login-btn {
+        background: #4facfe;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 25px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .login-btn:hover {
+        background: #007bff;
+        transform: scale(1.05);
+      }
+
+      /* FOOTER */
+      footer {
+        background: white;
+        text-align: center;
+        padding: 15px;
+        font-size: 12px;
+        color: #777;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="logo">SIGMA</div>
+      <nav>
+        <a href="#">Beranda</a>
+        <a href="#">Tentang</a>
+        <a href="#">Kontak</a>
+      </nav>
+    </header>
+
+    <!-- Vue -->
+    <div id="applogin"></div>
+    <script type="module" src="/src/main.js"></script>
+
+    <!-- FOOTER -->
+    <footer>© 2026 SIGMA System</footer>
+
+    <script>
+      function login() {
+        alert('Menuju halaman login...')
+        // window.location.href = "login.html";
+      }
+    </script>
+  </body>
+</html>

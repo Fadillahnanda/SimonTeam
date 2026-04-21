@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aplikasi Chat Sederhana</title>
+    <style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif; /* Mengikuti gaya font modern website kamu */
+    }
+
+    body {
+        background-color: #f8fafc; /* Latar belakang soft sesuai gambar */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .chat-wrapper {
+        width: 100%;
+        max-width: 400px;
+        height: 550px;
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05); /* Shadow lebih halus */
+        border-radius: 16px; /* Corner lebih bulat sesuai tombol Pelajari Fitur */
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+    }
+
+    /* Header Mengikuti Warna Tombol "Mulai Sekarang" */
+    .chat-header {
+        background: #2563eb; 
+        color: white;
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .chat-header h2 {
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    #chat-display {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        background: #ffffff; /* Bersih tanpa pattern agar lebih profesional */
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .bubble {
+        max-width: 80%;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    /* Bubble dari tim/admin (Abu-abu muda sesuai tombol sekunder) */
+    .received {
+        background: #f1f5f9;
+        color: #1e293b;
+        align-self: flex-start;
+        border-bottom-left-radius: 2px;
+    }
+
+    /* Bubble dari user (Biru sesuai tema utama) */
+    .sent {
+        background: #2563eb;
+        color: white;
+        align-self: flex-end;
+        border-bottom-right-radius: 2px;
+    }
+
+    .chat-footer {
+        padding: 15px;
+        background: #ffffff;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-top: 1px solid #f1f5f9;
+    }
+
+    .chat-footer input {
+        flex: 1;
+        padding: 12px 16px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        outline: none;
+        font-size: 14px;
+        transition: border-color 0.2s;
+    }
+
+    .chat-footer input:focus {
+        border-color: #2563eb;
+    }
+
+    /* Tombol Kirim */
+    .chat-footer button {
+        background: #2563eb;
+        color: white;
+        border: none;
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.2s;
+    }
+
+    .chat-footer button:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+    }
+</style>
+    </style>
+  </head>
+  <body>
+    <div class="chat-wrapper">
+      <div class="chat-header">
+        <div style="width: 40px; height: 40px; background: #ccc; border-radius: 50%"></div>
+        <h2>Support Team Sigma</h2>
+      </div>
+
+      <div id="chat-display">
+        <div class="bubble received">Halo! Ada yang bisa kami bantu hari ini?</div>
+      </div>
+
+      <div class="chat-footer">
+        <input type="text" id="chat-input" placeholder="Ketik pesan..." autocomplete="off" />
+        <button id="send-btn">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const chatDisplay = document.getElementById('chat-display')
+      const chatInput = document.getElementById('chat-input')
+      const sendBtn = document.getElementById('send-btn')
+
+      function kirimPesan() {
+        const pesanTeks = chatInput.value.trim()
+
+        if (pesanTeks !== '') {
+          // 1. Buat elemen pesan
+          const bubbleBaru = document.createElement('div')
+          bubbleBaru.classList.add('bubble', 'sent')
+          bubbleBaru.textContent = pesanTeks
+
+          // 2. Tampilkan di halaman chat
+          chatDisplay.appendChild(bubbleBaru)
+
+          // 3. Bersihkan input
+          chatInput.value = ''
+
+          // 4. Auto-scroll ke pesan paling bawah
+          chatDisplay.scrollTop = chatDisplay.scrollHeight
+
+          // Simulasi balasan otomatis (opsional)
+          setTimeout(() => {
+            const balasan = document.createElement('div')
+            balasan.classList.add('bubble', 'received')
+            balasan.textContent = 'Pesan Anda telah kami terima.'
+            chatDisplay.appendChild(balasan)
+            chatDisplay.scrollTop = chatDisplay.scrollHeight
+          }, 1000)
+        }
+      }
+
+      // Klik tombol kirim
+      sendBtn.addEventListener('click', kirimPesan)
+
+      // Tekan Enter untuk kirim
+      chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          kirimPesan()
+        }
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Siswa | SIGMA 2026</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #2563eb; /* Biru SIGMA */
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+      }
+
+      .dashboard-container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* Sidebar Styling */
+      .sidebar {
+        width: 250px;
+        background-color: var(--card-bg);
+        border-right: 1px solid var(--border-color);
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .logo {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 3rem;
+      }
+
+      .sidebar ul {
+        list-style: none;
+      }
+
+      .sidebar li {
+        padding: 0.8rem 1rem;
+        margin-bottom: 0.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        color: var(--text-muted);
+        transition: 0.3s;
+      }
+
+      .sidebar li.active,
+      .sidebar li:hover {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      .logout {
+        margin-top: auto;
+        color: #ef4444;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      /* Main Content Styling */
+      .main-content {
+        flex: 1;
+        padding: 2rem;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .profile-summary {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 50px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .profile-summary img {
+        border-radius: 50%;
+      }
+
+      .profile-summary .name {
+        font-weight: 600;
+        display: block;
+      }
+
+      .profile-summary .nisn {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      /* Cards & Grid */
+      .grid-layout {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+
+      .card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+
+      .card h3 {
+        margin-bottom: 1.2rem;
+        font-size: 1.1rem;
+      }
+
+      /* Presensi Styling */
+      .attendance-actions {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .btn-primary {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .btn-outline {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      .status span {
+        font-weight: 600;
+        color: #f59e0b;
+      }
+
+      /* Stats Styling */
+      .stats {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+
+      .stat-item .label {
+        display: block;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      .stat-item .value {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .green {
+        color: #10b981;
+      }
+
+      /* Table Styling */
+      .schedule-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .schedule-table th {
+        text-align: left;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        padding-bottom: 0.8rem;
+      }
+
+      .schedule-table td {
+        padding: 0.8rem 0;
+        border-top: 1px solid var(--border-color);
+        font-size: 0.9rem;
+      }
+
+      /* Make it responsive */
+      @media (max-width: 768px) {
+        .grid-layout {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <aside class="sidebar">
+        <h1 class="logo">SIGMA</h1>
+        <nav>
+          <ul>
+            <li class="active">Beranda</li>
+            <li>Jadwal Pelajaran</li>
+            <li>Nilai Rapor</li>
+            <li>Tugas</li>
+            <li>Pengaturan</li>
+          </ul>
+        </nav>
+        <div class="logout">Keluar</div>
+      </aside>
+
+      <main class="main-content">
+        <header class="header">
+          <div class="welcome-text">
+            <h2>Halo, Budi Santoso! 👋</h2>
+            <p>Kelas XII - IPA 1 (Edisi 2026)</p>
+          </div>
+          <div class="profile-summary">
+            <img src="https://via.placeholder.com/50" alt="Foto Profil" />
+            <div class="info">
+              <span class="name">Budi Santoso</span>
+              <span class="nisn">NISN: 0012345678</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="grid-layout">
+          <section class="card attendance-card">
+            <h3>Presensi Hari Ini</h3>
+            <div class="attendance-actions">
+              <button class="btn-primary">Presensi Masuk</button>
+              <button class="btn-outline">Presensi Pulang</button>
+            </div>
+            <p class="status">Status: <span>Belum Presensi</span></p>
+          </section>
+
+          <section class="card summary-card">
+            <h3>Ringkasan Kehadiran</h3>
+            <div class="stats">
+              <div class="stat-item">
+                <span class="label">Hadir</span>
+                <span class="value">18</span>
+              </div>
+              <div class="stat-item">
+                <span class="label">Sakit/Izin</span>
+                <span class="value">2</span>
+              </div>
+              <div class="stat-item">
+                <span class="label">Persentase</span>
+                <span class="value green">90%</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="card schedule-card">
+            <h3>Jadwal Pelajaran Hari Ini</h3>
+            <table class="schedule-table">
+              <thead>
+                <tr>
+                  <th>Jam</th>
+                  <th>Mapel</th>
+                  <th>Ruang</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>07:30</td>
+                  <td>Matematika</td>
+                  <td>Lab A1</td>
+                </tr>
+                <tr>
+                  <td>09:15</td>
+                  <td>Bahasa Inggris</td>
+                  <td>R. 202</td>
+                </tr>
+                <tr>
+                  <td>11:00</td>
+                  <td>Fisika</td>
+                  <td>Lab Fisika</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
