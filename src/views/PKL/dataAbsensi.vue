@@ -71,16 +71,12 @@
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" placeholder="Cari siswa..." />
               </div>
-              <select class="sm-select">
+              <!-- <select class="sm-select">
                 <option>Semua Kelas</option>
                 <option>XII TKJ</option>
                 <option>XII RPL</option>
-              </select>
-              <select class="sm-select">
-                <option>Semua Status</option>
-                <option>Aktif</option>
-                <option>Tidak Aktif</option>
-              </select>
+                <option>XII RPL</option>
+              </select> -->
             </div>
           </div>
 
@@ -91,8 +87,9 @@
                   <th>No</th>
                   <th>Nama Siswa</th>
                   <th>Tanggal</th>
-                  <th>Jam Absensi</th>
-                  <th>Dokumentasi</th>
+                  <th>Masuk</th>
+                  <th>Keluar</th>
+                  <th>Lampiran</th>
                   <th>Status Verifikasi</th>
                   <th>Aksi</th>
                 </tr>
@@ -103,13 +100,23 @@
                   <td>Adelia</td>
                   <td>20/04/2026</td>
                   <td>06.00</td>
-                  <td>gambar.jpg</td>
+                  <td>15.00</td>
+                  <td><a href="#" class="text-blue-600 hover:underline">Lihat</a></td>
                   <td><span class="status-badge aktif">Terverifikasi</span></td>
                   <td>
-                    <div class="sm-action-btns">
-                      <button class="btn-verif">
+                    <div class="sm-action-btn">
+                      <div class="sm-action-btns">
+  <button class="btn-action btn-check" title="Verifikasi Kehadiran">
+    <i class="fa-solid fa-check"></i>
+  </button>
+  <button class="btn-action btn-reject" title="Tolak Absensi">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+</div>
+
+                      <!-- <button class="btn-verif">
                         <i class="fa-regular fa-circle-check"></i>
-                      </button>
+                      </button> -->
                     </div>
                   </td>
                 </tr>
@@ -487,5 +494,66 @@
   .sm-content-area {
     padding: 0 20px;
   }
+}
+
+
+
+/* new */
+/* --- Action Buttons Enhancement --- */
+.sm-action-btns {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-action {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+/* Tombol Verifikasi (Hijau) */
+.btn-check {
+  background: #05f585;
+  color: #f1f8f5;
+}
+.btn-check:hover {
+  background: #eef3f1;
+  color: rgb(6, 114, 223);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+/* Tombol Info/Detail (Biru) */
+
+
+/* Tombol Reject (Merah) */
+.btn-reject {
+  background: #fef2f2;
+  color: #ef4444;
+}
+.btn-reject:hover {
+  background: #ef4444;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+/* Mempercantik Badge Status */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
 }
 </style>

@@ -69,17 +69,20 @@
             <div class="sm-filter-group">
               <div class="sm-search-wrapper">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Cari siswa..." />
+                <input 
+                  type="text" 
+                  v-model="search"
+                  placeholder="Cari siswa..." 
+                />
               </div>
-              <select class="sm-select">
-                <option>Semua Kelas</option>
-                <option>XII TKJ</option>
-                <option>XII RPL</option>
-              </select>
-              <select class="sm-select">
-                <option>Semua Status</option>
-                <option>Aktif</option>
-                <option>Tidak Aktif</option>
+              <select 
+                v-model="filterStatus"
+                class="sm-select"
+              >
+                <option value="">Semua Status</option>
+                <option value="Approved">Approved</option>
+                <option value="Pending">Pending</option>
+                <option value="Ditolak">Ditolak</option>
               </select>
             </div>
           </div>
@@ -88,39 +91,81 @@
             <table class="sm-table">
               <thead>
                 <tr>
-                  <th>No</th>
-                  <th>Nama Siswa</th>
-                  <th>Tanggal Jurnal</th>
-                  <th>Detail Aktifitas & Dokumentasi</th>
-                  <th>Status Validasi Industri</th>
-                  <th>Verifikasi Akhir & Feedback</th>
+                  <th>Nama</th>
+                  <th>Tanggal</th>
+                  <th>Kegiatan</th>
+                  <th>Status</th>
+                  <th>Keterangan</th>
                   <th>Aksi</th>
-                </tr>
+              </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Adelia</td>
-                  <td>20/04/2026</td>
-                  <td><button class="btn-detail">Lihat Detail</button></td>
+                <tr v-for="item in jurnal" :key="item.id" class="border-b">
+                  <td>{{ item.nama }}</td>
+                  <td>{{ item.tanggal }}</td>
+                  <td>{{ item.kegiatan }}</td>
                   <td>
-                    <center>
-                      <button class="btn-verif">
-                        <i class="fa-regular fa-circle-check"></i>
-                      </button>
-                    </center>
+                    <span :class="statusClass(item.status)" class="px-3 py-1 rounded-full text-xs font-medium">
+                      {{ item.status }}
+                    </span>
                   </td>
-                  <td><input type="text" name="verifcomment" id="verifcomment" /></td>
+                  <td>{{ item.keterangan || '-' }}</td>
                   <td>
-                    <div class="sm-action-btns">
-                      <button class="btn-verif">
-                        <i class="fa-regular fa-circle-check"></i>
-                      </button>
-                    </div>
+                    <button 
+                      class="btn-review" 
+                      @click="openReviewModal(item)"
+                      :unselectable="item.status !== 'Pending'"
+                    >
+                      Review
+                    </button>
                   </td>
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          <!-- Modal Review -->
+          <div class="modal" v-if="showModal">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3>Review Jurnal - {{ selectedStudent.nama }}</h3>
+                <button class="close-btn" @click="closeModal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <div class="student-info">
+                  <p><strong>Nama:</strong> {{ selectedStudent.nama }}</p>
+                  <p><strong>Tanggal:</strong> {{ selectedStudent.tanggal }}</p>
+                  <p><strong>Kegiatan:</strong> {{ selectedStudent.kegiatan }}</p>
+                  <!-- <img :src="selectedStudent.foto" class="student-photo" alt="Foto kegiatan"> -->
+                </div>
+
+                <div class="action-group">
+                  <button class="btn-approve" @click="approveJournal">
+                    <i class="fa-solid fa-check"></i> Setujui
+                  </button>
+                  <button class="btn-reject-action" @click="showRejectForm = true">
+                    <i class="fa-solid fa-times"></i> Tolak
+                  </button>
+                </div>
+
+                <div class="reject-form" v-if="showRejectForm">
+                  <label>Komentar Penolakan *</label>
+                  <textarea 
+                    v-model="rejectComment" 
+                    placeholder="Masukkan alasan penolakan..."
+                    rows="4"
+                  ></textarea>
+                  <button class="btn-submit-reject" @click="rejectJournal" :disabled="!rejectComment.trim()">
+                    Kirim Penolakan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Toast Notification -->
+          <div class="toast" v-if="showToast" :class="toastType">
+            <span>{{ toastMessage }}</span>
           </div>
 
           <div class="sm-pagination">
@@ -133,6 +178,99 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      showModal: false,
+      selectedStudent: null,
+      showRejectForm: false,
+      rejectComment: '',
+      showToast: false,
+      toastMessage: '',
+      toastType: 'success',
+      jurnal: [
+        {
+          id: 1,
+          nama: "Adelia",
+          tanggal: "20/04/2026",
+          kegiatan: "Konfigurasi jaringan LAN",
+          foto: "https://via.placeholder.com/150",
+          status: "Pending"
+        },
+        {
+          id: 2,
+          nama: "Rezky",
+          tanggal: "19/04/2026",
+          kegiatan: "Instalasi Router",
+          foto: "https://via.placeholder.com/150",
+          status: "Pending"
+        },
+        {
+          id: 3,
+          nama: "Ahmad",
+          tanggal: "18/04/2026",
+          kegiatan: "Troubleshooting Jaringan",
+          foto: "https://via.placeholder.com/150",
+          status: "Pending"
+        }
+      ]
+    }
+  },
+  methods: {
+    openReviewModal(item) {
+      this.selectedStudent = item
+      this.showModal = true
+      this.showRejectForm = false
+      this.rejectComment = ''
+    },
+    closeModal() {
+      this.showModal = false
+      this.showRejectForm = false
+      this.rejectComment = ''
+    },
+    approveJournal() {
+      // Ubah status menjadi Approved
+      this.selectedStudent.status = "Approved"
+      
+      this.toastMessage = 'Jurnal berhasil disetujui'
+      this.toastType = 'success'
+      this.showToast = true
+      this.closeModal()
+      
+      // Hapus toast setelah 3 detik
+      setTimeout(() => {
+        this.showToast = false
+      }, 3000)
+    },
+    rejectJournal() {
+      if (!this.rejectComment.trim()) {
+        alert('Komentar penolakan wajib diisi!')
+        return
+      }
+      
+      // Ubah status menjadi Ditolak
+      this.selectedStudent.status = "Ditolak"
+      
+      this.toastMessage = 'Jurnal ditolak dengan komentar'
+      this.toastType = 'error'
+      this.showToast = true
+      this.closeModal()
+      
+      setTimeout(() => {
+        this.showToast = false
+      }, 3000)
+    },
+    statusClass(status) {
+      if (status === "Approved") return "bg-green-100 text-green-700"
+      if (status === "Pending") return "bg-yellow-100 text-yellow-700"
+      if (status === "Ditolak") return "bg-red-100 text-red-700"
+      return "bg-gray-100 text-gray-700"
+    }
+  }
+}
+</script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -419,6 +557,217 @@
   color: #10b981;
 }
 
+.status-badge.approved {
+  background: #ecfdf5;
+  color: #10b981;
+  font-weight: 600;
+}
+
+/* --- TOMBOL REVIEW --- */
+.btn-review {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-review:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.btn-review:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* --- MODAL --- */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 90%;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #1e293b;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #64748b;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+/* --- ACTION GROUP --- */
+.action-group {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.btn-approve {
+  flex: 1;
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-approve:hover {
+  background: #059669;
+}
+
+.btn-reject-action {
+  flex: 1;
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-reject-action:hover {
+  background: #dc2626;
+}
+
+/* --- REJECT FORM --- */
+.reject-form {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 20px;
+}
+
+.reject-form label {
+  display: block;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.reject-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+  outline: none;
+}
+
+.reject-form textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.btn-submit-reject {
+  width: 100%;
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: 0.3s;
+}
+
+.btn-submit-reject:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.btn-submit-reject:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+/* --- TOAST NOTIFICATION --- */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 16px 24px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.3s ease-out;
+  z-index: 1100;
+}
+
+.toast.success {
+  background: #10b981;
+}
+
+.toast.error {
+  background: #ef4444;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 .sm-action-btns {
   display: flex;
   gap: 8px;
@@ -438,31 +787,53 @@
   transition: 0.2s;
 }
 
+.btn-reject {
+  background: #f90000;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .btn-verif:hover {
   opacity: 0.8;
 }
 
-/* --- PAGINATION --- */
+/* --- STUDENT INFO --- */
+.student-info {
+  margin-bottom: 20px;
+}
+
+.student-info p {
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.student-info p strong {
+  color: #1f2937;
+  margin-right: 8px;
+}
+
+.student-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin: 10px 0;
+  border: 2px solid #e5e7eb;
+}
+
+/* Pagination */
 .sm-pagination {
   margin-top: 2rem;
   display: flex;
   justify-content: flex-end;
   gap: 5px;
-}
-
-.page-item {
-  width: 35px;
-  height: 35px;
-  border: 1px solid #e2e8f0;
-  background: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.page-item.active {
-  background: #2563eb;
-  color: white;
-  border-color: #2563eb;
 }
 
 /* --- RESPONSIVE --- */
