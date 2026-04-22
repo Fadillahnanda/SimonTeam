@@ -54,7 +54,7 @@
 
     <div class="sm-content-wrapper">
       <header class="sm-topbar">
-        <h2>Data Guru/Pembimbing</h2>
+        <h2>Data Guru Pembimbing</h2>
         <div class="sm-user-profile">
           <i class="fa-regular fa-bell"></i>
           <span>Admin</span>

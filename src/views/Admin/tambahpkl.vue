@@ -94,11 +94,10 @@
                 required
               />
             </div>
-
             <div class="form-group">
               <label></label>
               <select v-model="siswa.kelas" required>
-                <option value="" disabled selected>Pilih Bidang</option>
+                <option value="" disabled selected>Pilih Jurusan</option>
                 <option value="XII RPL 1">PPLG</option>
                 <option value="XII RPL 2">TKJ</option>
                 <option value="XII TKJ 1">DKV</option>
@@ -120,7 +119,6 @@
                 required
               />
             </div>
-
             <div class="form-group">
               <label>Kuota</label>
               <input type="text" v-model="siswa.tempatPkl" placeholder="masukkan angka 1-10" />
@@ -130,7 +128,7 @@
           <div class="form-footer">
             <button type="button" class="btn-cancel" @click="$router.go(-1)">Batal</button>
             <button type="submit" class="btn-submit">
-              <i class="fa-solid fa-floppy-disk"></i> Simpan Siswa
+              <i class="fa-solid fa-floppy-disk"></i> Simpan Data
             </button>
           </div>
         </form>

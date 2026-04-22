@@ -94,7 +94,7 @@
                 <th>No</th>
                 <th>Nama Pembimbing PKL</th>
                 <th>Nama Instansi</th>
-                <th>Bidang</th>
+                <th>Jurusan</th>
                 <th>Alamat</th>
                 <th>Kontak</th>
                 <th>Kuota</th>
@@ -126,11 +126,11 @@
           </table>
         </div>
 
-        <div class="sm-pagination">
+        <!-- <div class="sm-pagination">
           <button class="page-item active">1</button>
           <button class="page-item">2</button>
           <button class="page-item">3</button>
-        </div>
+        </div> -->
       </section>
     </div>
   </div>
