@@ -3,39 +3,43 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 
-// 1. Pastikan variabel ref sudah ada
 const email = ref('')
 const password = ref('')
 const error = ref('')
 const router = useRouter()
 
-// 2. Masukkan kode axios di dalam fungsi ini
 const handleLogin = async () => {
   try {
-    // Kosongkan error setiap kali mencoba login ulang
     error.value = ''
 
-    // INI KODE YANG ANDA TANYAKAN:
-    const response = await axios.post('http://localhost:5000/login', {
+    const response = await axios.post('http://localhost:5000/user/login', {
       email: email.value,
       password: password.value,
     })
 
-    // Jika berhasil (status 200)
     if (response.data.token) {
       localStorage.setItem('token', response.data.token)
-      alert('Login Berhasil!')
-      router.push('/admin') // Ganti dengan path halaman tujuan Anda
+
+      const role = response.data.user.role
+      console.log('ROLE:', role) //debug
+
+      if (role === 'Admin') {
+        router.push('/admin')
+      } else if (role === 'Guru Pembina PKL') {
+        router.push('/guru')
+      } else if (role === 'Pembimbing Lapangan') {
+        router.push('/homepkl')
+      } else if (role === 'siswa') {
+        router.push('/homesiswa')
+      } else {
+        alert('Role tidak dikenali: ' + role)
+      }
     }
   } catch (err) {
     if (err.response) {
-      if (err.response.status === 401) {
-        error.value = 'Email atau password salah. Silakan coba lagi.'
-      } else {
-        error.value = err.response.data?.message || 'Terjadi kesalahan pada server.'
-      }
+      error.value = err.response.data?.message
     } else {
-      error.value = 'Gagal terhubung ke server.'
+      error.value = 'Server tidak terhubung'
     }
   }
 }

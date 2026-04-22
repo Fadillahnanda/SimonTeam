@@ -12,7 +12,7 @@
           </div>
         </router-link>
         <router-link to="/aksespengguna">
-          <div class="sm-menu-item active">
+          <div class="sm-menu-item">
             <i class="fa-solid fa-lock"></i>
             <span>Akses Pengguna</span>
           </div>
@@ -25,7 +25,7 @@
         </router-link>
 
         <router-link to="/dataguru">
-          <div class="sm-menu-item">
+          <div class="sm-menu-item active">
             <i class="fa-solid fa-chalkboard-user"></i>
             <span>Data Guru</span>
           </div>

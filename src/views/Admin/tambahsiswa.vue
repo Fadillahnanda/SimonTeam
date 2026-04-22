@@ -18,7 +18,7 @@
           </div>
         </router-link>
         <router-link to="/datasiswa">
-          <div class="sm-menu-item">
+          <div class="sm-menu-item active">
             <i class="fa-solid fa-users"></i>
             <span>Data Siswa</span>
           </div>

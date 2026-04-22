@@ -32,7 +32,7 @@
         </router-link>
 
         <router-link to="/datapkl">
-          <div class="sm-menu-item">
+          <div class="sm-menu-item active">
             <i class="fa-solid fa-building"></i>
             <span>Data PKL</span>
           </div>
