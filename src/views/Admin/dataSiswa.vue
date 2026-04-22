@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 const { createApp } = Vue
 
 createApp({
@@ -31,7 +31,7 @@ createApp({
     },
   },
 }).mount('#app')
-</script>
+</script> -->
 <template>
   <div class="sm-dashboard">
     <aside class="sm-sidebar">
