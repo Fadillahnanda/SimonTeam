@@ -1,3 +1,30 @@
+<script>
+export default {
+  data() {
+    return {
+      pembimbingpkl: [], // harus sama dengan v-for
+    }
+  },
+
+  methods: {
+    //ambil data dari backend
+    async getPembimbing() {
+      try {
+        const res = await fetch('http://localhost:5000/pembimbingpkl') //  sesuaikan endpoint kamu
+        const data = await res.json()
+        this.pembimbingpkl = data
+      } catch (error) {
+        console.error('Gagal mengambil data:', error)
+      }
+    },
+  },
+
+  // otomatis jalan saat halaman dibuka
+  mounted() {
+    this.getPembimbing()
+  },
+}
+</script>
 <template>
   <div class="sm-dashboard">
     <aside class="sm-sidebar">
@@ -98,23 +125,24 @@
                 <th>Alamat</th>
                 <th>Kontak</th>
                 <th>Kuota</th>
-                <th>Status</th>
+
                 <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Nanda</td>
-                <td>PT.Telkom</td>
-                <td>Jaringan</td>
-                <td>Jl. Jenderal Sudirman No. 123</td>
-                <td>0854</td>
-                <td>10</td>
-                <td><span class="status-badge aktif">Aktif</span></td>
+              <tr v-for="(item, index) in pembimbingpkl" :key="item.nisn">
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.nama_pembimbing }}</td>
+                <td>{{ item.nama_instansi }}</td>
+                <td>{{ item.bidang }}</td>
+                <td>{{ item.alamat }}</td>
+                <td>{{ item.kontak }}</td>
+                <td>{{ item.kuota }}</td>
                 <td>
                   <div class="sm-action-btns">
-                    <button class="btn-view"><i class="fa-regular fa-eye"></i></button>
+                    <button class="btn-view">
+                      <i class="fa-solid fa-key"></i>
+                    </button>
                     <router-link to="/editpkl">
                       <button class="btn-edit"><i class="fa-regular fa-pen-to-square"></i></button>
                     </router-link>

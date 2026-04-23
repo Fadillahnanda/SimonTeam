@@ -80,7 +80,7 @@
               <label>Nama Pembimbing</label>
               <input
                 type="text"
-                v-model="siswa.nama"
+                v-model="formData.nama_pembimbing"
                 placeholder="Masukkan nama lengkap beserta gelar"
                 required
               />
@@ -89,33 +89,30 @@
               <label>Nama Instansi</label>
               <input
                 type="text"
-                v-model="siswa.nama"
-                placeholder="Masukkan nama industri. Contoh: PT. Telkom"
+                v-model="formData.nama_instansi"
+                placeholder="Masukkan nama industri. "
                 required
               />
             </div>
 
             <div class="form-group">
-              <label></label>
-              <select v-model="siswa.kelas" required>
-                <option value="" disabled selected>Pilih Bidang</option>
-                <option value="XII RPL 1">PPLG</option>
-                <option value="XII RPL 2">TKJ</option>
-                <option value="XII TKJ 1">DKV</option>
-                <option value="XII TKJ 1">APAT</option>
-                <option value="XII TKJ 1">OTOMOTIF</option>
-                <option value="XII TKJ 1">TKR</option>
+              <label>Bidang</label>
+              <select v-model="formData.bidang" required>
+                <option value="" disabled>Pilih Bidang</option>
+                <option value="PPLG">PPLG</option>
+                <option value="TKJ">TKJ</option>
+                <option value="DKV">DKV</option>
               </select>
             </div>
             <div class="form-group">
               <label>Alamat</label>
-              <input type="text" v-model="siswa.nama" placeholder="Masukkan alamat" required />
+              <input type="text" v-model="formData.alamat" placeholder="Masukkan alamat" required />
             </div>
             <div class="form-group">
               <label>Kontak</label>
               <input
-                type="text"
-                v-model="siswa.nama"
+                type="number"
+                v-model="formData.kontak"
                 placeholder="Masukkan nomor kontak"
                 required
               />
@@ -123,7 +120,7 @@
 
             <div class="form-group">
               <label>Kuota</label>
-              <input type="text" v-model="siswa.tempatPkl" placeholder="masukkan angka 1-10" />
+              <input type="number" v-model="formData.kuota" placeholder="masukkan angka 1-10" />
             </div>
           </div>
 
@@ -139,24 +136,41 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script>
+import axios from 'axios'
 
-// State data form
-const siswa = ref({
-  nisn: '',
-  nama: '',
-  kelas: '',
-  jurusan: '',
-  tempatPkl: '',
-  alamat: '',
-})
+export default {
+  data() {
+    return {
+      formData: {
+        nama_pembimbing: '',
+        nama_instansi: '',
+        bidang: '',
+        alamat: '',
+        kontak: '',
+        kuota: '',
+      },
+    }
+  },
+  methods: {
+    // 🔥 GANTI NAMA METHOD SESUAI FORM
+    async simpanData() {
+      try {
+        console.log('Tombol submit diklik') // debug
 
-// Fungsi simpan
-const simpanData = () => {
-  console.log('Data Siswa Baru:', siswa.value)
-  alert('Data Berhasil Disimpan!')
-  // Integrasi API Anda di sini
+        const res = await axios.post('http://localhost:5000/pembimbingpkl', this.formData)
+        console.log(res.data)
+
+        alert('Data berhasil ditambahkan')
+
+        // 🔥 redirect ke halaman data PKL
+        this.$router.push('/datapkl')
+      } catch (error) {
+        console.error('ERROR:', error.response || error.message)
+        alert('Gagal menyimpan: ' + (error.response?.data?.message || error.message))
+      }
+    },
+  },
 }
 </script>
 

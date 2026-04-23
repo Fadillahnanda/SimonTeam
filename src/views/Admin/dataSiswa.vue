@@ -1,43 +1,38 @@
-<!-- <script setup>
-const { createApp } = Vue
-
-createApp({
+<script>
+export default {
   data() {
     return {
-      siswa: [],
-      from: {
-        nama_siswa: '',
-        nis: '',
-        kelas: '',
-        tempat_pkl: '',
-        // status: '',
-      },
-      isEdit: false,
+      siswa: [], // harus sama dengan v-for
     }
   },
-  mounted() {
-    this.fetchSiswa()
-  },
+
   methods: {
-    async fetchSiswa() {
+    //ambil data dari backend
+    async getSiswa() {
       try {
-        const res = await fetch('http://localhost:5000/api/siswa')
+        const res = await fetch('http://localhost:5000/siswa') //  sesuaikan endpoint kamu
         const data = await res.json()
-        // const data = await response.json()
         this.siswa = data
       } catch (error) {
-        console.error('Error fetching siswa:', error)
+        console.error('Gagal mengambil data:', error)
       }
     },
   },
-}).mount('#app')
-</script> -->
+
+  // otomatis jalan saat halaman dibuka
+  mounted() {
+    this.getSiswa()
+  },
+}
+</script>
+
 <template>
   <div class="sm-dashboard">
     <aside class="sm-sidebar">
       <div class="sm-logo">
         <h1>SIMON<span>PKL</span></h1>
       </div>
+
       <nav class="sm-menu">
         <router-link to="/admin">
           <div class="sm-menu-item">
@@ -88,7 +83,7 @@ createApp({
 
     <div class="sm-content-wrapper">
       <header class="sm-topbar">
-        <h2>Data Siswa</h2>
+        <h2>Tambah Data Siswa</h2>
         <div class="sm-user-profile">
           <i class="fa-regular fa-bell"></i>
           <span>Admin</span>
@@ -136,21 +131,31 @@ createApp({
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <!-- <td>Siswa</td> -->
-                <td>Nanda</td>
-                <td>12345</td>
-                <td>XII TKJ</td>
-                <td>PT Telkom</td>
-                <td><span class="status-badge aktif">Aktif</span></td>
+              <tr v-for="(item, index) in siswa" :key="item.nisn">
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.nama_siswa }}</td>
+                <td>{{ item.nisn }}</td>
+                <td>{{ item.kelas }}</td>
+                <td>{{ item.tempat_pkl }}</td>
+
+                <td>
+                  <span class="status-badge aktif"> {{ item.status }}</span>
+                </td>
                 <td>
                   <div class="sm-action-btns">
-                    <button class="btn-view"><i class="fa-solid fa-key"></i></button>
-                    <router-link to="/editsiswa">
-                      <button class="btn-edit"><i class="fa-regular fa-pen-to-square"></i></button>
-                    </router-link>
-                    <button class="btn-delete"><i class="fa-regular fa-trash-can"></i></button>
+                    <button class="btn-view">
+                      <i class="fa-solid fa-key"></i>
+                    </button>
+
+                    <!--EDIT -->
+                    <button class="btn-edit" @click="editSiswa(item)">
+                      <i class="fa-regular fa-pen-to-square"></i>
+                    </button>
+
+                    <!-- DELETE -->
+                    <button class="btn-delete" @click="deleteSiswa(item.nisn)">
+                      <i class="fa-regular fa-trash-can"></i>
+                    </button>
                   </div>
                 </td>
               </tr>

@@ -69,71 +69,49 @@
       </header>
 
       <main class="sm-form-card">
-        <form @submit.prevent="simpanData">
+        <form @submit.prevent="submitForm">
           <div class="form-grid">
             <div class="form-group">
               <label>NIP</label>
-              <input type="number" v-model="siswa.nisn" placeholder="Contoh: 00123456" required />
+              <input type="number" v-model="formData.nip" placeholder="Contoh: 00123456" required />
             </div>
 
             <div class="form-group">
               <label>Nama Lengkap</label>
               <input
                 type="text"
-                v-model="siswa.nama"
+                v-model="formData.nama_guru"
                 placeholder="Masukkan nama lengkap beserta gelar"
                 required
               />
             </div>
-
             <div class="form-group">
-              <label></label>
-              <select v-model="siswa.kelas" required>
-                <option value="" disabled selected>Pilih Kelas</option>
-                <option value="XII RPL 1">XII RPL A</option>
-                <option value="XII RPL 2">XII RPL B</option>
-                <!-- <option value="XII TKJ 1">XII TKJ 1</option> -->
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Kompetensi Keahlian</label>
-              <select v-model="siswa.jurusan" required>
-                <option value="" disabled selected>Pilih Jurusan</option>
-                <option value="XII RPL 1">PPLG</option>
-                <option value="XII RPL 2">TKJ</option>
-                <option value="XII TKJ 1">DKV</option>
-                <option value="XII TKJ 1">APAT</option>
-                <option value="XII TKJ 1">OTOMOTIF</option>
-                <option value="XII TKJ 1">TKR</option>
-              </select>
-            </div>
-
-            <!-- <div class="form-group">
-              <label>Kompetensi Keahlian</label>
+              <label>Lokasi PKL</label>
               <input
                 type="text"
-                v-model="siswa.jurusan"
-                placeholder="Contoh: Rekayasa Perangkat Lunak"
-              />
-            </div> -->
-
-            <div class="form-group full-width">
-              <label>Tempat / Instansi PKL</label>
-              <input
-                type="text"
-                v-model="siswa.tempatPkl"
-                placeholder="Nama PT atau Perusahaan tempat magang"
+                v-model="formData.lokasipkl"
+                placeholder="Masukkan Lokasi PKL"
+                required
               />
             </div>
-
-            <!-- <div class="form-group full-width">
-              <label>Alamat Lengkap</label>
-              <textarea
-                v-model="siswa.alamat"
-                rows="3"
-                placeholder="Alamat rumah tinggal saat ini"
-              ></textarea>
-            </div> -->
+            <div class="form-group">
+              <label>No Telpon</label>
+              <input
+                type="number"
+                v-model="formData.noTelpon"
+                placeholder="Contoh: 0853999000"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>Jumlah Siswa</label>
+              <input
+                type="number"
+                v-model="formData.jumlahsiswa"
+                placeholder="Contoh: 0853999000"
+                required
+              />
+            </div>
           </div>
 
           <div class="form-footer">
@@ -148,24 +126,36 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script>
+import axios from 'axios'
 
-// State data form
-const siswa = ref({
-  nisn: '',
-  nama: '',
-  kelas: '',
-  jurusan: '',
-  tempatPkl: '',
-  alamat: '',
-})
+export default {
+  data() {
+    return {
+      formData: {
+        nip: '',
+        nama_guru: '',
+        lokasipkl: '',
+        noTelpon: '',
+        jumlahsiswa: '',
+      },
+    }
+  },
 
-// Fungsi simpan
-const simpanData = () => {
-  console.log('Data Siswa Baru:', siswa.value)
-  alert('Data Berhasil Disimpan!')
-  // Integrasi API Anda di sini
+  methods: {
+    async submitForm() {
+      try {
+        const res = await axios.post('http://localhost:5000/gurupembina', this.formData)
+        console.log(res.data)
+
+        alert('Data berhasil ditambahkan')
+        this.$router.push('/dataguru')
+      } catch (error) {
+        console.error('ERROR:', error.response || error.message)
+        alert('Gagal menyimpan: ' + (error.response?.data?.message || error.message))
+      }
+    },
+  },
 }
 </script>
 

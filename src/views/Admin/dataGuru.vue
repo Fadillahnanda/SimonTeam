@@ -1,3 +1,31 @@
+<script>
+export default {
+  data() {
+    return {
+      gurupembina: [], // harus sama dengan v-for
+    }
+  },
+
+  methods: {
+    //ambil data dari backend
+    async getGuru() {
+      try {
+        const res = await fetch('http://localhost:5000/gurupembina') //  sesuaikan endpoint kamu
+        const data = await res.json()
+        this.gurupembina = data
+      } catch (error) {
+        console.error('Gagal mengambil data:', error)
+      }
+    },
+  },
+
+  // otomatis jalan saat halaman dibuka
+  mounted() {
+    this.getGuru()
+  },
+}
+</script>
+
 <template>
   <div class="sm-dashboard">
     <aside class="sm-sidebar">
@@ -97,26 +125,33 @@
                 <th>Lokasi PKL</th>
                 <th>No. HP</th>
                 <th>Jumlah Siswa</th>
-                <th>Status</th>
+                <!-- <th>Status</th> -->
                 <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Nanda</td>
-                <td>123</td>
-                <td>PT. Abadi</td>
-                <td>0852</td>
-                <td>4</td>
-                <td><span class="status-badge aktif">Aktif</span></td>
+              <tr v-for="(item, index) in gurupembina" :key="item.nip">
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.nama_guru }}</td>
+                <td>{{ item.nip }}</td>
+                <td>{{ item.lokasipkl }}</td>
+                <td>{{ item.noTelpon }}</td>
+                <td>{{ item.jumlahsiswa }}</td>
+                <!-- 
+                <td>
+                  <span class="status-badge aktif">{{ item.status }}</span>
+                </td> -->
                 <td>
                   <div class="sm-action-btns">
-                    <button class="btn-view"><i class="fa-solid fa-key"></i></button>
-                    <router-link to="/editguru">
+                    <button class="btn-view" @click="viewGuru(item)">
+                      <i class="fa-solid fa-key"></i>
+                    </button>
+                    <router-link to="/editguru" @click="deleteGuru(item.nip)">
                       <button class="btn-edit"><i class="fa-regular fa-pen-to-square"></i></button>
                     </router-link>
-                    <button class="btn-delete"><i class="fa-regular fa-trash-can"></i></button>
+                    <button class="btn-delete" @click="deleteGuru(item.nip)">
+                      <i class="fa-regular fa-trash-can"></i>
+                    </button>
                   </div>
                 </td>
               </tr>

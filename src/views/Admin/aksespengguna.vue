@@ -1,3 +1,30 @@
+<script>
+export default {
+  data() {
+    return {
+      user: [], // harus sama dengan v-for
+    }
+  },
+
+  methods: {
+    //ambil data dari backend
+    async getUser() {
+      try {
+        const res = await fetch('http://localhost:5000/user') //  sesuaikan endpoint kamu
+        const data = await res.json()
+        this.user = data
+      } catch (error) {
+        console.error('Gagal mengambil data:', error)
+      }
+    },
+  },
+
+  // otomatis jalan saat halaman dibuka
+  mounted() {
+    this.getUser()
+  },
+}
+</script>
 <template>
   <div class="sm-dashboard">
     <aside class="sm-sidebar">
@@ -82,9 +109,6 @@
               <option>Tidak Aktif</option>
             </select>
           </div>
-          <router-link to="/tambahsiswa">
-            <button class="sm-btn-add"><i class="fa-solid fa-plus"></i> Tambah Siswa</button>
-          </router-link>
         </div>
 
         <div class="sm-table-responsive">
@@ -92,26 +116,23 @@
             <thead>
               <tr>
                 <th>No</th>
-                <th>Nama</th>
+                <!-- <th>Nama</th> -->
                 <th>Email</th>
                 <th>Role</th>
-                <th>Pass</th>
                 <th>Status</th>
                 <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <!-- <td>Siswa</td> -->
-                <td>Nanda</td>
-                <td>nanda@gmail.com</td>
-                <td>Admin</td>
-                <td>12345</td>
+              <tr v-for="(item, index) in user" :key="item.nip">
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.email }}</td>
+                <!-- <td>nanda@gmail.com</td> -->
+                <td>{{ item.role }}</td>
                 <td><span class="status-badge aktif">Aktif</span></td>
                 <td>
                   <div class="sm-action-btns">
-                    <button class="btn-view"><i class="fa-solid fa-key"></i></button>
+                    <!-- <button class="btn-view"><i class="fa-solid fa-key"></i></button> -->
                     <router-link to="/editsiswa">
                       <button class="btn-edit"><i class="fa-regular fa-pen-to-square"></i></button>
                     </router-link>

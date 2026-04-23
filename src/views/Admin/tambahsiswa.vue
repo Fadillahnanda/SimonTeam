@@ -4,6 +4,7 @@
       <div class="sm-logo">
         <h1>SIMON<span>PKL</span></h1>
       </div>
+
       <nav class="sm-menu">
         <router-link to="/admin">
           <div class="sm-menu-item">
@@ -12,7 +13,7 @@
           </div>
         </router-link>
         <router-link to="/aksespengguna">
-          <div class="sm-menu-item active">
+          <div class="sm-menu-item">
             <i class="fa-solid fa-lock"></i>
             <span>Akses Pengguna</span>
           </div>
@@ -56,91 +57,58 @@
       <header class="sm-topbar">
         <div class="header-title">
           <h2>Tambah Data Siswa</h2>
-          <p>Lengkapi formulir di bawah untuk menambahkan siswa baru</p>
-        </div>
-
-        <div class="sm-user-profile">
-          <i class="fa-regular fa-bell"></i>
-          <span class="user-name">Admin</span>
-          <router-link to="/profile">
-            <div class="sm-avatar"></div>
-          </router-link>
+          <p>Lengkapi formulir di bawah</p>
         </div>
       </header>
 
       <main class="sm-form-card">
-        <form @submit.prevent="simpanData">
+        <form @submit.prevent="submitForm">
           <div class="form-grid">
             <div class="form-group">
               <label>NISN</label>
-              <input type="number" v-model="siswa.nisn" placeholder="Contoh: 00123456" required />
+              <input type="number" v-model="formData.nisn" required />
             </div>
 
             <div class="form-group">
               <label>Nama Lengkap</label>
-              <input
-                type="text"
-                v-model="siswa.nama"
-                placeholder="Masukkan nama sesuai ijazah"
-                required
-              />
+              <input type="text" v-model="formData.nama_siswa" required />
             </div>
 
             <div class="form-group">
               <label>Kelas</label>
-              <select v-model="siswa.kelas" required>
-                <option value="" disabled selected>Pilih Kelas</option>
-                <option value="XII RPL 1">XII RPL A</option>
-                <option value="XII RPL 2">XII RPL B</option>
-                <!-- <option value="XII TKJ 1">XII TKJ 1</option> -->
+              <select v-model="formData.kelas" required>
+                <option value="">Pilih</option>
+                <option>XII RPL A</option>
+                <option>XII RPL B</option>
               </select>
             </div>
+
             <div class="form-group">
-              <label>Kompetensi Keahlian</label>
-              <select v-model="siswa.jurusan" required>
-                <option value="" disabled selected>Pilih Jurusan</option>
-                <option value="XII RPL 1">PPLG</option>
-                <option value="XII RPL 2">TKJ</option>
-                <option value="XII TKJ 1">DKV</option>
-                <option value="XII TKJ 1">APAT</option>
-                <option value="XII TKJ 1">OTOMOTIF</option>
-                <option value="XII TKJ 1">TKR</option>
+              <label>Jurusan</label>
+              <select v-model="formData.jurusan" required>
+                <option value="">Pilih</option>
+                <option>PPLG</option>
+                <option>TKJ</option>
               </select>
             </div>
 
-            <!-- <div class="form-group">
-              <label>Kompetensi Keahlian</label>
-              <input
-                type="text"
-                v-model="siswa.jurusan"
-                placeholder="Contoh: Rekayasa Perangkat Lunak"
-              />
-            </div> -->
-
-            <div class="form-group full-width">
-              <label>Tempat / Instansi PKL</label>
-              <input
-                type="text"
-                v-model="siswa.tempatPkl"
-                placeholder="Nama PT atau Perusahaan tempat magang"
-              />
+            <div class="form-group">
+              <label>Tempat PKL</label>
+              <input type="text" v-model="formData.tempat_pkl" />
             </div>
 
-            <!-- <div class="form-group full-width">
-              <label>Alamat Lengkap</label>
-              <textarea
-                v-model="siswa.alamat"
-                rows="3"
-                placeholder="Alamat rumah tinggal saat ini"
-              ></textarea>
-            </div> -->
+            <div class="form-group">
+              <label>Status</label>
+              <select v-model="formData.status" required>
+                <option value="">Pilih</option>
+                <option>Aktif</option>
+                <option>Tidak Aktif</option>
+              </select>
+            </div>
           </div>
 
           <div class="form-footer">
-            <button type="button" class="btn-cancel" @click="$router.go(-1)">Batal</button>
-            <button type="submit" class="btn-submit">
-              <i class="fa-solid fa-floppy-disk"></i> Simpan Siswa
-            </button>
+            <button type="submit" class="btn-submit">Simpan</button>
           </div>
         </form>
       </main>
@@ -148,24 +116,36 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script>
+import axios from 'axios'
 
-// State data form
-const siswa = ref({
-  nisn: '',
-  nama: '',
-  kelas: '',
-  jurusan: '',
-  tempatPkl: '',
-  alamat: '',
-})
+export default {
+  data() {
+    return {
+      formData: {
+        nisn: '',
+        nama_siswa: '',
+        kelas: '',
+        jurusan: '',
+        tempat_pkl: '',
+        status: '',
+      },
+    }
+  },
+  methods: {
+    async submitForm() {
+      try {
+        const res = await axios.post('http://localhost:5000/siswa', this.formData)
+        console.log(res.data)
 
-// Fungsi simpan
-const simpanData = () => {
-  console.log('Data Siswa Baru:', siswa.value)
-  alert('Data Berhasil Disimpan!')
-  // Integrasi API Anda di sini
+        alert('Data berhasil ditambahkan')
+        this.$router.push('/datasiswa')
+      } catch (error) {
+        console.error('ERROR:', error.response || error.message)
+        alert('Gagal menyimpan: ' + (error.response?.data?.message || error.message))
+      }
+    },
+  },
 }
 </script>
 
