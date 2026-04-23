@@ -54,11 +54,13 @@
               <option>XII TKJ</option>
               <option>XII RPL</option>
             </select>
-            <select class="sm-select">
+            <select id="status" class="sm-select">
               <option>Semua Status</option>
-              <option>Aktif</option>
-              <option>Tidak Aktif</option>
+              <option>Approved</option>
+              <option>Rejected</option>
+              <option>Pending</option>
             </select>
+            <input type="date" id="tanggal" class="sm-select" />
           </div>
         </div>
 
@@ -68,10 +70,10 @@
               <tr>
                 <th>No</th>
                 <th>Nama</th>
-                <th>NIP</th>
+                <th>Jurusan</th>
                 <th>Lokasi PKL</th>
-                <th>No. HP</th>
-                <th>Jumlah Siswa</th>
+                <th>Masuk</th>
+                <th>Keluar</th>
                 <th>Status</th>
                 <th>Aksi</th>
               </tr>

@@ -56,8 +56,9 @@
             </select>
             <select class="sm-select">
               <option>Semua Status</option>
-              <option>Aktif</option>
-              <option>Tidak Aktif</option>
+              <option>Approved</option>
+              <option>Rejected</option>
+              <option>Pending</option>
             </select>
           </div>
         </div>
@@ -68,10 +69,9 @@
               <tr>
                 <th>No</th>
                 <th>Nama</th>
-                <th>NIP</th>
-                <th>Lokasi PKL</th>
-                <th>No. HP</th>
-                <th>Jumlah Siswa</th>
+                <th>Jurusan</th>
+                <th>Tanggal</th>
+                <th>Jenis Kegiatan</th>
                 <th>Status</th>
                 <th>Aksi</th>
               </tr>
@@ -80,11 +80,10 @@
               <tr>
                 <td>1</td>
                 <td>Nanda</td>
-                <td>123</td>
-                <td>PT. Abadi</td>
-                <td>0852</td>
-                <td>4</td>
-                <td><span class="status-badge aktif">Aktif</span></td>
+                <td>TKJ</td>
+                <td>18-04-2026</td>
+                <td>Praktik Kerja Lapangan</td>
+                <td><span class="status-badge approved">Approved</span></td>
                 <td>
                   <div class="sm-action-btns">
                     <button class="btn-view"><i class="fa-regular fa-eye"></i></button>

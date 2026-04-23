@@ -123,7 +123,7 @@ export default {
                 <th>No</th>
                 <!-- <th>Role</th> -->
                 <th>Nama</th>
-                <th>NIS</th>
+                <th>Jurusan</th>
                 <th>Kelas</th>
                 <th>Tempat PKL</th>
                 <th>Status</th>

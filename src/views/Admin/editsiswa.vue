@@ -101,17 +101,24 @@
                 <option value="XII TKJ 1">TKR</option>
               </select>
             </div>
-
             <div class="form-group full-width">
-              <label>Tempat / Instansi PKL</label>
+              <label>Tempat / Nama Instansi</label>
               <input type="text" v-model="siswa.tempatPkl" placeholder="PT. Telkom" />
             </div>
           </div>
+          <div class="form-group">
+          <label for="status">Status</label>
+        <select v-model="siswa.kelas" id="status" required class="form-control">
+          <option value="" disabled selected>Pilih Status</option>
+          <option value="Aktif">Aktif</option>
+          <option value="Tidak Aktif">Tidak Aktif</option>
+        </select>
+</div>
 
           <div class="form-footer">
             <button type="button" class="btn-cancel" @click="$router.go(-1)">Batal</button>
             <button type="submit" class="btn-submit">
-              <i class="fa-solid fa-floppy-disk"></i> Simpan Siswa
+              <i class="fa-solid fa-floppy-disk"></i> Simpan Data
             </button>
           </div>
         </form>

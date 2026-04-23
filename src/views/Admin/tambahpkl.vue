@@ -94,7 +94,6 @@
                 required
               />
             </div>
-
             <div class="form-group">
               <label>Bidang</label>
               <select v-model="formData.bidang" required>
@@ -117,7 +116,6 @@
                 required
               />
             </div>
-
             <div class="form-group">
               <label>Kuota</label>
               <input type="number" v-model="formData.kuota" placeholder="masukkan angka 1-10" />
@@ -127,7 +125,7 @@
           <div class="form-footer">
             <button type="button" class="btn-cancel" @click="$router.go(-1)">Batal</button>
             <button type="submit" class="btn-submit">
-              <i class="fa-solid fa-floppy-disk"></i> Simpan Siswa
+              <i class="fa-solid fa-floppy-disk"></i> Simpan Data
             </button>
           </div>
         </form>
