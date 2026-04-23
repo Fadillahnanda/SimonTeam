@@ -84,6 +84,7 @@
                 <option value="Pending">Pending</option>
                 <option value="Ditolak">Ditolak</option>
               </select>
+              <input type="date" id="tanggal" class="sm-select" />
             </div>
           </div>
 

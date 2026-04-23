@@ -107,7 +107,7 @@
 /* 2. Sidebar tepat di posisi nol */
 .sm-sidebar {
   width: 260px;
-  background: #36e4c4;
+  background: #09add2;
   color: white;
   padding: 2.5rem 1.5rem;
   display: flex;

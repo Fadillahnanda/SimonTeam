@@ -71,6 +71,7 @@
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" placeholder="Cari siswa..." />
               </div>
+               <input type="date" id="tanggal" class="sm-select" />
               <!-- <select class="sm-select">
                 <option>Semua Kelas</option>
                 <option>XII TKJ</option>
