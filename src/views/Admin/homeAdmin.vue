@@ -1,3 +1,37 @@
+<script>
+import axios from 'axios'
+
+export default {
+  data() {
+    return {
+      totalSiswa: 0,
+      totalIndustri: 0,
+      jurnalPending: 0, // kalau belum ada, bisa 0 dulu
+    }
+  },
+
+  methods: {
+    async getDashboardData() {
+      try {
+        // ambil jumlah siswa
+        const siswa = await axios.get('http://localhost:5000/siswa')
+        this.totalSiswa = siswa.data.length
+
+        // ambil jumlah industri (pembimbing PKL)
+        const industri = await axios.get('http://localhost:5000/pembimbingpkl')
+        this.totalIndustri = industri.data.length
+      } catch (error) {
+        console.error('Gagal ambil data dashboard:', error)
+      }
+    },
+  },
+
+  mounted() {
+    this.getDashboardData()
+  },
+}
+</script>
+
 <template>
   <div class="sm-dashboard">
     <aside class="sm-sidebar">
@@ -69,7 +103,7 @@
         <div class="sm-stat-card">
           <div class="sm-stat-info">
             <p>Total Siswa</p>
-            <h3>120</h3>
+            <h3>{{ totalSiswa }}</h3>
           </div>
           <div class="sm-icon blue"><i class="fa-solid fa-users"></i></div>
         </div>
@@ -77,7 +111,7 @@
         <div class="sm-stat-card">
           <div class="sm-stat-info">
             <p>Industri</p>
-            <h3>25</h3>
+            <h3>{{ totalIndustri }}</h3>
           </div>
           <div class="sm-icon grey"><i class="fa-solid fa-building"></i></div>
         </div>
@@ -85,7 +119,7 @@
         <div class="sm-stat-card">
           <div class="sm-stat-info">
             <p>Jurnal Pending</p>
-            <h3 class="warning-text">18</h3>
+            <h3 class="warning-text">{{ jurnalPending }}</h3>
           </div>
           <div class="sm-icon orange"><i class="fa-solid fa-clock-rotate-left"></i></div>
         </div>

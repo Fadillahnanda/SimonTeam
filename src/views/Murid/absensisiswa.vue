@@ -1,3 +1,86 @@
+<script>
+import axios from 'axios'
+
+export default {
+  data() {
+    return {
+      foto: null,
+      latitude: null,
+      longitude: null,
+      lokasiText: '',
+      siswa_id: '', // isi dari login / localStorage
+    }
+  },
+
+  mounted() {
+    // ambil id siswa dari localStorage (sesuaikan dengan sistem login kamu)
+    this.siswa_id = localStorage.getItem('siswa_id')
+  },
+
+  methods: {
+    // 📸 HANDLE FILE
+    handleFileUpload(event) {
+      this.foto = event.target.files[0]
+    },
+
+    // 📍 AMBIL GPS
+    getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            this.latitude = position.coords.latitude
+            this.longitude = position.coords.longitude
+
+            this.lokasiText = `${this.latitude}, ${this.longitude}`
+          },
+          (error) => {
+            alert('Gagal ambil lokasi')
+            console.log(error)
+          },
+        )
+      } else {
+        alert('Browser tidak support GPS')
+      }
+    },
+
+    // 🚀 SUBMIT ABSENSI
+    async submitAbsensi() {
+      try {
+        if (!this.foto) {
+          return alert('Foto wajib diupload')
+        }
+
+        if (!this.latitude || !this.longitude) {
+          return alert('Lokasi belum diambil')
+        }
+
+        const formData = new FormData()
+        formData.append('siswa_id', this.siswa_id)
+        formData.append('latitude', this.latitude)
+        formData.append('longitude', this.longitude)
+        formData.append('foto', this.foto)
+
+        const res = await axios.post('http://localhost:5000/absensi', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+
+        alert('Absensi berhasil ')
+
+        // reset form
+        this.foto = null
+        this.latitude = null
+        this.longitude = null
+        this.lokasiText = ''
+      } catch (error) {
+        console.log(error)
+        alert('Gagal kirim absensi')
+      }
+    },
+  },
+}
+</script>
 <template>
   <div class="sm-dashboard">
     <aside class="sm-sidebar">
@@ -75,7 +158,6 @@
             <div class="input-section">
               <label class="form-label">Upload Foto Kehadiran</label>
               <div class="custom-file-upload">
-                <input type="file" id="upload-foto" hidden />
                 <label for="upload-foto" class="file-drop-zone">
                   <i class="fa-solid fa-camera"></i>
                   <span>Pilih file atau ambil foto</span>
@@ -86,8 +168,7 @@
             <div class="input-section">
               <label class="form-label">Lokasi (GPS)</label>
               <div class="gps-control">
-                <input type="text" class="sm-input-text" placeholder="Klik ambil lokasi" readonly />
-                <button class="btn-gps">
+                <button class="btn-gps" @click="getLocation">
                   <i class="fa-solid fa-location-dot"></i> Ambil Lokasi
                 </button>
               </div>

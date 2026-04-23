@@ -75,14 +75,14 @@
             <div class="input-section">
               <textarea class="sm-textarea" placeholder="Tulis kegiatan..."></textarea>
             </div>
-
+            <!-- 
             <div class="input-section">
               <div class="custom-file-input">
                 <input type="file" id="choose-file" hidden />
                 <label for="choose-file" class="btn-file">Choose file</label>
                 <span class="file-name">No file chosen</span>
               </div>
-            </div>
+            </div> -->
 
             <div class="submit-section">
               <button class="btn-submit-jurnal">Simpan</button>
